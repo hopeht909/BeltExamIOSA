@@ -2,8 +2,7 @@
 //  SceneDelegate.swift
 //  AmeeraAbduallah
 //
-//  Created by administrator on 11/01/2022.
-//
+
 
 import UIKit
 
