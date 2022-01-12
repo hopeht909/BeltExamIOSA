@@ -12,11 +12,17 @@ class LogInViewController: UIViewController {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     
+    @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Log In"
         emailField.text = ""
         passwordField.text = ""
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "ImageBackground")!)
+        logInButton.layer.cornerRadius = 10.0
+        signUpButton.layer.cornerRadius = 10.0
         
     }
     

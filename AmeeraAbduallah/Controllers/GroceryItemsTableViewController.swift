@@ -22,6 +22,7 @@ class GroceryItemsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Groceries to Buy"
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "ImageBackground")!)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add , target: self, action: #selector(addItem))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Sign out", style: .done, target: self, action: #selector(signOut))
         

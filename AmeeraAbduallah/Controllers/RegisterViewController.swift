@@ -11,7 +11,7 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwirdField: UITextField!
-    
+    @IBOutlet weak var signUpButton: UIButton!
     
     
     override func viewDidLoad() {
@@ -20,6 +20,8 @@ class RegisterViewController: UIViewController {
         nameField.text = ""
         emailField.text = ""
         passwirdField.text = ""
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "ImageBackground")!)
+        signUpButton.layer.cornerRadius = 10.0
     }
     
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
