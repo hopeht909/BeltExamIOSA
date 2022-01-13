@@ -17,13 +17,17 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Create Account"
-        nameField.text = ""
-        emailField.text = ""
-        passwirdField.text = ""
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "ImageBackground")!)
         signUpButton.layer.cornerRadius = 10.0
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        nameField.text = ""
+        emailField.text = ""
+        passwirdField.text = ""
+    }
+    // MARK: - Firebase SignUp
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         
         guard let password = passwirdField.text, let email = emailField.text,

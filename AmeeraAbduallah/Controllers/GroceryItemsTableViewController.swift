@@ -10,27 +10,40 @@ import FirebaseDatabase
 
 class GroceryItemsTableViewController: UITableViewController {
     
-    // MARK: Constants
-    let listToUsers = "ListToUsers"
-    
     // MARK: Properties
     var items: [GroceryItem] = []
-    var user: User!
+    var user: User?
     var userCountBarButtonItem: UIBarButtonItem!
     let ref = Database.database().reference(withPath: "grocery-items")
+    let usersRef = Database.database().reference(withPath: "online")
+    var usersRefObservers: [DatabaseHandle] = []
+    
+    
+    var onlineUserCount: String = "1"
+    let email = UserDefaults.standard.value(forKey: "email") as? String
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Groceries to Buy"
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "ImageBackground")!)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add , target: self, action: #selector(addItem))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Sign out", style: .done, target: self, action: #selector(signOut))
+        tableView.allowsMultipleSelectionDuringEditing = false
+        userCountBarButtonItem = UIBarButtonItem(title: "\(onlineUserCount)",
+                                                 style: .plain,
+                                                 target: self,
+                                                 action: #selector(openOnlineUsersView))
+        userCountBarButtonItem.tintColor = UIColor.white
+        navigationItem.leftBarButtonItem = userCountBarButtonItem
         
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
-                   return 
-               }
+            return
+        }
         let itemId = UUID().uuidString
         user = User(uid: itemId, email: email)
+    }
+    
+    // MARK: - Grocery Items Management
+    override func viewWillAppear(_ animated: Bool) {
         
         ref.observe(.value, with: { snapshot in
             var newItems: [GroceryItem] = []
@@ -44,8 +57,32 @@ class GroceryItemsTableViewController: UITableViewController {
             self.tableView.reloadData()
             
         })
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+        let itemId = UUID().uuidString
+        user = User(uid: itemId, email: email)
+        guard let user = user else {
+            return
+        }
+        let currentUserRef = self.usersRef.child(user.uid)
+        currentUserRef.setValue(user.email)
+        currentUserRef.onDisconnectRemoveValue()
+        let users = usersRef.observe(.value){snapShot in
+            if snapShot.exists(){
+                self.onlineUserCount = snapShot.childrenCount.description
+            }
+            else {
+                self.onlineUserCount = "0"
+            }
+        }
+        usersRefObservers.append(users)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        usersRefObservers.forEach(usersRef.removeObserver(withHandle:))
+        usersRefObservers = []
+    }
     
     //MARK: - Add Item
     @objc func addItem() {
@@ -55,12 +92,13 @@ class GroceryItemsTableViewController: UITableViewController {
         
         let saveAction = UIAlertAction(title: "Save",
                                        style: .default) { _ in
-        
+            
             guard let textField = alert.textFields?.first,
-                  let text = textField.text else { return }
+                  let text = textField.text,
+                  let user = self.user else { return }
             
             let groceryItem = GroceryItem(name: text,
-                                          addedByUser: self.user.email,
+                                          addedByUser: user.email,
                                           completed: false)
             
             let groceryItemRef = self.ref.child(text.lowercased())
@@ -72,45 +110,10 @@ class GroceryItemsTableViewController: UITableViewController {
                                          style: .default)
         
         alert.addTextField()
-        
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
-        
         present(alert, animated: true, completion: nil)
     }
-    //MARK: - Sign Out
-    @objc func signOut() {
-        let actionSheet = UIAlertController(title: "",
-                                            message: "Are you sure you want to log out",
-                                            preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Log Out",
-                                            style: .destructive,
-                                            handler: { [weak self] _ in
-            
-            guard let strongSelf = self else {
-                return
-            }
-            UserDefaults.standard.setValue(nil, forKey: "email")
-            UserDefaults.standard.setValue(nil, forKey: "name")
-            do {
-                try FirebaseAuth.Auth.auth().signOut()
-                
-                let logInVC =  strongSelf.storyboard?.instantiateViewController(withIdentifier: "LogInViewController") as! LogInViewController
-                logInVC.modalPresentationStyle = .fullScreen
-                strongSelf.navigationController?.popToRootViewController(animated: true)
-                
-                //strongSelf.present(logInVC, animated: false)
-            }
-            catch {
-                print("Failed to log out")
-            }
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel",
-                                            style: .cancel,
-                                            handler: nil))
-        present(actionSheet, animated: true)
-    }
-    
     
     // MARK: - UITableView data source
     
@@ -129,45 +132,56 @@ class GroceryItemsTableViewController: UITableViewController {
         
         return cell
     }
-    //MARK: - Edit Item
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        let grocery = items[indexPath.row]
-        let alert = UIAlertController(title: "Grocery Item",
-                                      message: "Edit an Item",
-                                      preferredStyle: .alert)
-        
-        let saveAction = UIAlertAction(title: "Save",
-                                       style: .default) { _ in
-            
-            guard let textField = alert.textFields?.first,
-                  let text = textField.text else { return }
-
-            let groceryItem = GroceryItem(name: text,
-                                          addedByUser: self.user.email,
-                                          completed: false)
-            
-            self.ref.child(grocery.key).setValue(groceryItem.toAnyObject())
-        
-        }
-        
-        
-        let cancelAction = UIAlertAction(title: "Cancel",
-                                         style: .default)
-        
-        alert.addTextField()
-        
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true, completion: nil)
-        
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
     //MARK: - Delete Item
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let groceryItem = items[indexPath.row]
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .normal, title: "Delete") { (contextAction, view, CompletionHandler) in
+            
+            let groceryItem = self.items[indexPath.row]
             groceryItem.ref?.removeValue()
+            
         }
+        //MARK: - Edit Item
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (contextAction, view, CompletionHandler) in
+            let grocery = self.items[indexPath.row]
+            let alert = UIAlertController(title: "Grocery Item",
+                                          message: "Edit an Item",
+                                          preferredStyle: .alert)
+            
+            let saveAction = UIAlertAction(title: "Save",
+                                           style: .default) { _ in
+                
+                guard let textField = alert.textFields?.first,
+                      let text = textField.text,
+                      let user = self.user else { return }
+                
+                let groceryItem = GroceryItem(name: text,
+                                              addedByUser: user.email,
+                                              completed: false)
+                
+                self.ref.child(grocery.key).setValue(groceryItem.toAnyObject())
+                
+            }
+            
+            
+            let cancelAction = UIAlertAction(title: "Cancel",
+                                             style: .default)
+            
+            alert.addTextField()
+            
+            alert.addAction(saveAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+        deleteAction.backgroundColor = .red
+        editAction.backgroundColor = .systemGreen
+        deleteAction.image = UIImage(systemName: "trash")
+        editAction.image = UIImage(systemName: "square.and.pencil")
+        return UISwipeActionsConfiguration(actions :[deleteAction,editAction])
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -180,17 +194,18 @@ class GroceryItemsTableViewController: UITableViewController {
         ])
         ref.queryOrdered(byChild: "completed").observe(.value, with: { snapshot in
             var newItems: [GroceryItem] = []
-
+            
             for item in snapshot.children {
                 let groceryItem = GroceryItem(snapshot: item as! DataSnapshot)
                 newItems.append(groceryItem)
             }
-
+            
             self.items = newItems
             self.tableView.reloadData()
         })
-       
+        
     }
+    //MARK: - Completed Item
     
     func toggleCellCheckbox(_ cell: UITableViewCell, isCompleted: Bool) {
         if !isCompleted {
@@ -202,6 +217,11 @@ class GroceryItemsTableViewController: UITableViewController {
             cell.textLabel?.textColor = UIColor.gray
             cell.detailTextLabel?.textColor = UIColor.gray
         }
+    }
+    
+    @objc func openOnlineUsersView() {
+        let OnlineUsersVC =  self.storyboard?.instantiateViewController(withIdentifier: "OnlineUsers") as! OnlineUsersTableViewController
+        self.navigationController?.pushViewController(OnlineUsersVC, animated: true)
     }
     
 }

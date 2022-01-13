@@ -13,15 +13,9 @@ final class DatabaseManager {
     static let shared = DatabaseManager()
     
     private let database = Database.database().reference()
-    
-    
-    static func safeEmail(emailAddress: String) -> String {
-        var safeEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
-        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
-        return safeEmail
-    }
+
 }
-// MARK: - account management
+// MARK: - Account Management
 extension DatabaseManager {
     public func userExists(with email:String, completion: @escaping ((Bool) -> Void)) {
         

@@ -18,14 +18,18 @@ class LogInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Log In"
-        emailField.text = ""
-        passwordField.text = ""
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "ImageBackground")!)
         logInButton.layer.cornerRadius = 10.0
         signUpButton.layer.cornerRadius = 10.0
         
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        emailField.text = ""
+        passwordField.text = ""
+    }
+    // MARK: - Firebase Login
+
     @IBAction func logInButtonTapped(_ sender: UIButton) {
         
         guard let email = emailField.text,
@@ -33,8 +37,6 @@ class LogInViewController: UIViewController {
                   alertUserLoginError()
                   return
               }
-     
-        // Firebase Login
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self] authResult, error in
             
             guard let strongSelf = self else {

@@ -23,6 +23,7 @@
 		C3CBECA7278DE054008445D5 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CBECA6278DE054008445D5 /* DatabaseManager.swift */; };
 		C3CBECA9278EC235008445D5 /* GroceryItem .swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CBECA8278EC235008445D5 /* GroceryItem .swift */; };
 		C3CBECAC278EC2DB008445D5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CBECAB278EC2DB008445D5 /* User.swift */; };
+		C3CBECAE27900011008445D5 /* OnlineUsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CBECAD27900011008445D5 /* OnlineUsersTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		C3CBECA6278DE054008445D5 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		C3CBECA8278EC235008445D5 /* GroceryItem .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GroceryItem .swift"; sourceTree = "<group>"; };
 		C3CBECAB278EC2DB008445D5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C3CBECAD27900011008445D5 /* OnlineUsersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineUsersTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				C3CBEC84278DAC50008445D5 /* LogInViewController.swift */,
 				C3CBEC97278DB4C3008445D5 /* RegisterViewController.swift */,
 				C3CBEC99278DB536008445D5 /* GroceryItemsTableViewController.swift */,
+				C3CBECAD27900011008445D5 /* OnlineUsersTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				C3CBEC85278DAC50008445D5 /* LogInViewController.swift in Sources */,
 				C3CBEC81278DAC50008445D5 /* AppDelegate.swift in Sources */,
 				C3CBECA7278DE054008445D5 /* DatabaseManager.swift in Sources */,
+				C3CBECAE27900011008445D5 /* OnlineUsersTableViewController.swift in Sources */,
 				C3CBECA9278EC235008445D5 /* GroceryItem .swift in Sources */,
 				C3CBECAC278EC2DB008445D5 /* User.swift in Sources */,
 				C3CBEC83278DAC50008445D5 /* SceneDelegate.swift in Sources */,

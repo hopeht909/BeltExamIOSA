@@ -20,7 +20,7 @@
                                 <rect key="frame" x="73.5" y="324" width="267" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="IVB-p6-MHE"/>
-                                    <constraint firstAttribute="width" constant="267" id="pBP-98-O1g"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="267" id="pBP-98-O1g"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -29,7 +29,7 @@
                                 <rect key="frame" x="73.5" y="384" width="267" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="BVP-lu-dZD"/>
-                                    <constraint firstAttribute="width" constant="267" id="hWl-V0-LC2"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="267" id="hWl-V0-LC2"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -38,7 +38,7 @@
                                 <rect key="frame" x="163" y="487" width="88" height="44"/>
                                 <color key="backgroundColor" red="0.41514664890000003" green="0.88174444439999999" blue="0.61600518230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="88" id="8RE-bO-a8y"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="88" id="8RE-bO-a8y"/>
                                     <constraint firstAttribute="height" constant="44" id="FzA-xn-itO"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
@@ -54,7 +54,7 @@
                                 <rect key="frame" x="147" y="551" width="120" height="44"/>
                                 <color key="backgroundColor" red="0.41514664890000003" green="0.88174444439999999" blue="0.61600518230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="BJf-aM-0iH"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="BJf-aM-0iH"/>
                                     <constraint firstAttribute="height" constant="44" id="tZR-Ap-dQz"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
@@ -105,7 +105,7 @@
                                 <rect key="frame" x="73" y="264" width="268" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="BNg-UO-Ibw"/>
-                                    <constraint firstAttribute="width" constant="268" id="leX-td-MhQ"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="268" id="leX-td-MhQ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -113,7 +113,7 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zDC-At-yEk">
                                 <rect key="frame" x="73" y="324" width="268" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="268" id="62B-fq-WWd"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="268" id="62B-fq-WWd"/>
                                     <constraint firstAttribute="height" constant="50" id="YVE-2f-11G"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -123,7 +123,7 @@
                                 <rect key="frame" x="73" y="384" width="268" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="8wi-8b-6Md"/>
-                                    <constraint firstAttribute="width" constant="268" id="Q0H-4o-vcM"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="268" id="Q0H-4o-vcM"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -133,7 +133,7 @@
                                 <color key="backgroundColor" red="0.41514664890000003" green="0.88174444439999999" blue="0.61600518230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="u9f-yF-p9g"/>
-                                    <constraint firstAttribute="width" constant="130" id="uzZ-l8-Svi"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="uzZ-l8-Svi"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Sign up">
@@ -215,6 +215,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1S0-86-CS1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3378" y="98"/>
+        </scene>
+        <!--Online Users Table View Controller-->
+        <scene sceneID="WPa-Dy-c5K">
+            <objects>
+                <tableViewController storyboardIdentifier="OnlineUsers" id="MeC-eU-1me" customClass="OnlineUsersTableViewController" customModule="AmeeraAbduallah" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="umh-7N-68m">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="userCell" id="Wxo-q0-iGL">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Wxo-q0-iGL" id="aUd-qq-rnK">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.93420505519999997" green="0.99906927349999997" blue="0.950579226" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="MeC-eU-1me" id="mIA-tf-hdE"/>
+                            <outlet property="delegate" destination="MeC-eU-1me" id="XBO-ef-83d"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y9G-bA-nKh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4058" y="98"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="q10-Xd-trK">

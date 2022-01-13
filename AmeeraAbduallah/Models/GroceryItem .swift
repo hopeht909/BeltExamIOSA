@@ -6,7 +6,6 @@
 import Foundation
 import Firebase
 
-
 struct GroceryItem {
   
   let key: String
@@ -39,5 +38,4 @@ struct GroceryItem {
       "completed": completed
     ]
   }
-  
 }
