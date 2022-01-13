@@ -79,12 +79,11 @@
 			isa = PBXGroup;
 			children = (
 				C3CBECA4278DBCEA008445D5 /* GoogleService-Info.plist */,
+				C3CBEC8E278DAC54008445D5 /* Info.plist */,
 				C3CBECAA278EC239008445D5 /* Models */,
 				C3CBEC96278DB35E008445D5 /* Resources  */,
 				C3CBEC95278DB34B008445D5 /* Controllers */,
 				C3CBEC94278DB33D008445D5 /* Views */,
-				C3CBEC89278DAC54008445D5 /* Assets.xcassets */,
-				C3CBEC8E278DAC54008445D5 /* Info.plist */,
 			);
 			path = AmeeraAbduallah;
 			sourceTree = "<group>";
@@ -94,6 +93,7 @@
 			children = (
 				C3CBEC86278DAC50008445D5 /* Main.storyboard */,
 				C3CBEC8B278DAC54008445D5 /* LaunchScreen.storyboard */,
+				C3CBEC89278DAC54008445D5 /* Assets.xcassets */,
 			);
 			path = Views;
 			sourceTree = "<group>";

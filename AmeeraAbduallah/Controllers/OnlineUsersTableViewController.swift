@@ -26,22 +26,19 @@ class OnlineUsersTableViewController: UITableViewController {
     }
     // MARK: -  Online Users Management
     override func viewWillAppear(_ animated: Bool) {
-        // 1
+        super.viewWillAppear(true)
+        
         let childAdded = usersRef
             .observe(.childAdded) { [weak self] snap in
-                // 2
                 guard
                     let email = snap.value as? String,
                     let self = self
                 else { return }
                 self.currentUsers.append(email)
                 print (self.currentUsers)
-                // 3
                 let row = self.currentUsers.count-1
-                // 4
                 let indexPath = IndexPath(row: row, section: 0)
                 print (indexPath)
-                // 5
                 self.tableView.insertRows(at: [indexPath], with: .top)
             }
         usersRefObservers.append(childAdded)
@@ -64,39 +61,28 @@ class OnlineUsersTableViewController: UITableViewController {
         
     }
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
         usersRefObservers.forEach(usersRef.removeObserver(withHandle:))
         usersRefObservers = []
     }
+    
     //MARK: - Sign Out
     @objc func signOut() {
-        let actionSheet = UIAlertController(title: "",
-                                            message: "Are you sure you want to log out",
-                                            preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Log Out",
-                                            style: .destructive,
-                                            handler: { [weak self] _ in
-            
-            guard let strongSelf = self else {
+        guard let user = Auth.auth().currentUser else { return }
+        
+        let onlineRef = Database.database().reference(withPath: "online/\(user.uid)")
+        onlineRef.removeValue { error, _ in
+            if let error = error {
+                print("Removing online failed: \(error)")
                 return
             }
-            UserDefaults.standard.setValue(nil, forKey: "email")
-            UserDefaults.standard.setValue(nil, forKey: "name")
             do {
-                try FirebaseAuth.Auth.auth().signOut()
-                
-                let logInVC =  strongSelf.storyboard?.instantiateViewController(withIdentifier: "LogInViewController") as! LogInViewController
-                logInVC.modalPresentationStyle = .fullScreen
-                strongSelf.navigationController?.popToRootViewController(animated: true)
-                
+                try Auth.auth().signOut()
+                self.navigationController?.popToRootViewController(animated: true)
+            } catch let error {
+                print("Auth sign out failed: \(error)")
             }
-            catch {
-                print("Failed to log out")
-            }
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel",
-                                            style: .cancel,
-                                            handler: nil))
-        present(actionSheet, animated: true)
+        }
     }
     
     // MARK: - Table view data source

@@ -17,7 +17,7 @@ class GroceryItemsTableViewController: UITableViewController {
     let ref = Database.database().reference(withPath: "grocery-items")
     let usersRef = Database.database().reference(withPath: "online")
     var usersRefObservers: [DatabaseHandle] = []
-    
+    var handle: AuthStateDidChangeListenerHandle?
     
     var onlineUserCount: String = "1"
     let email = UserDefaults.standard.value(forKey: "email") as? String
@@ -44,7 +44,7 @@ class GroceryItemsTableViewController: UITableViewController {
     
     // MARK: - Grocery Items Management
     override func viewWillAppear(_ animated: Bool) {
-        
+        super.viewWillAppear(animated)
         ref.observe(.value, with: { snapshot in
             var newItems: [GroceryItem] = []
             
@@ -62,17 +62,20 @@ class GroceryItemsTableViewController: UITableViewController {
         }
         let itemId = UUID().uuidString
         user = User(uid: itemId, email: email)
-        guard let user = user else {
-            return
+        
+        handle = Auth.auth().addStateDidChangeListener { _, user in
+            guard let user = user else { return }
+            self.user = User(uid: itemId, email: email)
+            
+            let currentUserRef = self.usersRef.child(user.uid)
+            currentUserRef.setValue(user.email)
+            currentUserRef.onDisconnectRemoveValue()
         }
-        let currentUserRef = self.usersRef.child(user.uid)
-        currentUserRef.setValue(user.email)
-        currentUserRef.onDisconnectRemoveValue()
-        let users = usersRef.observe(.value){snapShot in
-            if snapShot.exists(){
-                self.onlineUserCount = snapShot.childrenCount.description
-            }
-            else {
+        
+        let users = usersRef.observe(.value) { snapshot in
+            if snapshot.exists() {
+                self.onlineUserCount = snapshot.childrenCount.description
+            } else {
                 self.onlineUserCount = "0"
             }
         }
@@ -80,9 +83,15 @@ class GroceryItemsTableViewController: UITableViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        usersRefObservers.forEach(ref.removeObserver(withHandle:))
+        usersRefObservers = []
         usersRefObservers.forEach(usersRef.removeObserver(withHandle:))
         usersRefObservers = []
+        guard let handle = handle else { return }
+        Auth.auth().removeStateDidChangeListener(handle)
     }
+    
     
     //MARK: - Add Item
     @objc func addItem() {

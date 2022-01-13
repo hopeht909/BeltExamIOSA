@@ -27,6 +27,7 @@ class LogInViewController: UIViewController {
         super.viewWillAppear(true)
         emailField.text = ""
         passwordField.text = ""
+        
     }
     // MARK: - Firebase Login
 
